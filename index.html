@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bazarim</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .button {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px;
+            background-color: red;
+            color: white;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+        .chat-container {
+            display: none;
+            margin-top: 50px;
+        }
+        .chat-box {
+            width: 50%;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .message-input {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .message-button {
+            padding: 10px 20px;
+        }
+        .messages {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .popup .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .popup input {
+            padding: 10px;
+            margin-top: 10px;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="button" id="coolReasonsButton">Причины, почему Владимир Владимирович Десятков крутой</button>
+        <button class="button" id="chatButton">Общение</button>
+    </div>
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-box">
+            <input type="text" id="messageInput" class="message-input" placeholder="Введите сообщение...">
+            <button class="message-button" onclick="sendMessage()">Отправить</button>
+            <div class="messages" id="messages"></div>
+        </div>
+    </div>
+    <div class="popup" id="nicknamePopup">
+        <span class="close" onclick="closePopup()">×</span>
+        <p>Не желаете придумать своё пользовательское имя?</p>
+        <input type="text" id="nicknameInput" placeholder="Введите никнейм">
+    </div>
+    <script>
+        let nickname = "Анонимус";
+        let isFirstMessage = true;
+
+        document.getElementById('chatButton').addEventListener('click', function() {
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('chatContainer').style.display = 'block';
+        });
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const messages = document.getElementById('messages');
+            if (messageInput.value.trim() === "") return;
+            
+            const message = document.createElement('div');
+            message.classList.add('message');
+            message.innerHTML = `<strong>${nickname}:</strong> ${messageInput.value}`;
+            messages.insertBefore(message, messages.firstChild);
+
+            messageInput.value = '';
+
+            if (isFirstMessage) {
+                isFirstMessage = false;
+                document.getElementById('nicknamePopup').style.display = 'block';
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('nicknamePopup').style.display = 'none';
+        }
+
+        document.getElementById('nicknameInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                nickname = event.target.value.trim() || "Анонимус";
+                closePopup();
+            }
+        });
+    </script>
+</body>
+</html>
